@@ -19,10 +19,10 @@ ruri_check_seccomp_ret(res, container->no_warnings);
 Too ugly you see.     
 seccomp_rule_add() uses va_args, so if you don't use these complex code, you can only use a macro. But in cross-arch ci, it will bomb to TLE, as the pre-compile expansion performance of macro is not good, and qemu is slow.      
 So, I want a:     
-```ce
+```c
 #[[ce_reg(seccomp_rule_add, int, _<0)]]
 seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(accept), 0) :<;
-res = seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(accept4), 0) :<;
+seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(accept4), 0) :<;
 seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(access), 0) :<;
 ```
 It's better, right? Dev happy, reader happy, PRs happy, LLM happy (with prompt), all happy.   
@@ -40,7 +40,7 @@ But as ce will translate .ce to c, and if you only use `:>` as happy face in .ce
 In one word, CE-lang makes a zipped error handling in C, and it's kawaii.      
 # The .hce header:
 .hce stands for `happy c ending`, it's just a kv-map to register error expr and handler for funcs. maybe we can also have standard hce conf like posix.hce.      
-```ce
+```c
 // Register function type and failure condition
 #[[ce_reg(func, type, exp)]]
 // For example:
@@ -56,7 +56,7 @@ In one word, CE-lang makes a zipped error handling in C, and it's kawaii.
 
 .hce shoud only contain the three simple commands, and other definations, like `#define panic()`, `#define log()`, and `typedef` should be in .ce or your .h, as .hce is just `happy c ending` file.    
 # CE-lang design goals:
-```ce
+```c
 // Will call panic() if open returns < 0
 int fd = open("file.txt", O_RDONLY) :<;
 
