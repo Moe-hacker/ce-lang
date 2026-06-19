@@ -1,5 +1,6 @@
 # WIP:
-Nothoing implemented yet, just some design ideas.
+Nothoing implemented yet, just some design ideas.    
+And, ce-lang will just be a pre-compile code generator for ruri. It will not act on other unnecessary features that I will not use it in my code.    
 # About CE-lang:
 Just a cute error handling extension for C, with no syntax breaking, and the tail will never wag the cat.
 We will just have a new happy face `:>` for default handling, and a sad face `:<` for error handling, and `#[[ce_foo()]]` for code generation.     
@@ -23,7 +24,7 @@ seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(accept), 0) :<;
 res = seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(accept4), 0) :<;
 seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(access), 0) :<;
 ```
-It's better, right?    
+It's better, right? Dev happy, reader happy, PRs happy, LLM happy with prompt, all happy.   
 And it will be auto expanded to code like this:    
 ```c
 if(seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(accept), 0) != 0) {
