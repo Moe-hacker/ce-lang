@@ -100,5 +100,17 @@ You can use _CE_DFT for `:>` and _CE_PAN for `:<`, just recover with one `sed`, 
 
 CE-lang will use line-no for internal variable name, so you will match generited code with .ce easily.    
 # Future:
-Maybe we can have a `#[[ce_enforce(func)]]` to enforce you catch result for func in ce, and `:D` for ignoring the error, and `:o` for only log when error, `:~ { ... }` for a custom handler, and even `::}` to output a jellyfih in ceg, and use `::}` as a readable todo note.        
+Maybe we can have a `#[[ce_enforce(func)]]` to enforce you catch result for func in ce, and `:D` for ignoring the error, and `:o` for only log when error, `:~ { ... }` for a custom handler, and even `::}` to output a nautilus in ceg, and use `::}` as a readable todo note.        
 Maybe one day it can be C-Evolved, but at least these ideas shows that c is extensible, and ce is also.    
+# Ascii logo:
+```
+          _.-'''-._
+        .'         `. 
+      /   .'~~~,      \ 
+     |   /       \    |    
+     |   |   :>  /    |
+     \   '.       ,___/~~~
+     `.   '-----`   /~~~~~~
+	  `.           /~~~~~~~~
+         '-.____. /~~~~~~~~~~~
+```
