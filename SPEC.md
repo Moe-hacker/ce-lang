@@ -346,7 +346,7 @@ The exact handler signature is implementation-defined.
 
 10. .hce Files
 
-".hce" ("happy c ending") files provide CE registrations.
+".hce" ("happy c ending/handle c error") files provide CE registrations.
 
 They are declarative metadata files.
 

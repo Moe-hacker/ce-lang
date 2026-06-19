@@ -39,7 +39,7 @@ So ce-lang will never break c syntax, except the old `:>` as `]` design.
 But as ce will translate .ce to c, and if you only use `:>` as happy face in .ce, that's fine.    
 In one word, CE-lang makes a zipped error handling in C, and it's kawaii.      
 # The .hce header:
-.hce stands for `happy c ending`, it's just a kv-map to register error expr and handler for funcs. maybe we can also have standard hce conf like posix.hce.      
+.hce stands for `happy c ending/handle c error`, it's just a kv-map to register error expr and handler for funcs. maybe we can also have standard hce conf like posix.hce.      
 ```c
 // Register function type and failure condition
 #[[ce_reg(func, type, exp)]]
@@ -54,7 +54,7 @@ In one word, CE-lang makes a zipped error handling in C, and it's kawaii.
 #[[ce_dft(open, log)]]
 ```
 
-.hce shoud only contain the three simple commands, and other definations, like `#define panic()`, `#define log()`, and `typedef` should be in .ce or your .h, as .hce is just `happy c ending` file.    
+.hce shoud only contain the three simple commands, and other definations, like `#define panic()`, `#define log()`, and `typedef` should be in .ce or your .h, as .hce is just `happy c ending/handle c error` delclaration file.    
 # CE-lang design goals:
 ```c
 // Will call panic() if open returns < 0
