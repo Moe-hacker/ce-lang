@@ -96,3 +96,6 @@ CE-lang just implements `:<` and `:>`, `and #[[ce_foo()]]`, the rest is just C c
 In one word, CE-lang is like yet another C-style .unwrap().    
 And, there will be many ubs, so always do a diff-check between .ce and .c, and make sure the generated code is what you want.    
 You can use _CE_DFT for `:>` and _CE_PAN for `:<`, just recover with one `sed`, so your IDE and clang-format will not scream at it. But for `foo() :<, :>`, your IDE will scream anyway, although these code are less in real-world case.    
+# Future:
+Maybe we can have a `#[[ce_enforce(func)]]` to enforce you catch result for func in ce, and `:D` for ignoring the error, and `:o` for only log when error, and even `:~ { ... }` for a custom handler.       
+Maybe one day it can be C-Evolved, but at least these ideas shows that c is extensible, and ce is also.    
