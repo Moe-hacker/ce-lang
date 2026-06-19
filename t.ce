@@ -1,0 +1,51 @@
+#[[ce_use(t.hce)]]
+typedef type int;
+type func_t()
+{
+	return 1;
+}
+type func_f()
+{
+	return 0;
+}
+void t_f()
+{
+	printf("Always fail:\n");
+	func_f() :>;
+	func_f() :<;
+	func_f() :<
+	{
+		printf("panic\n");
+	}
+	func_f() :<
+	{
+		printf("panic\n");
+	}
+	:>
+	{
+		printf("log\n");
+	}
+}
+void t_t()
+{
+	printf("Always success:\n");
+	func_t() :>;
+	func_t() :<;
+	func_t() :<
+	{
+		printf("panic\n");
+	}
+	func_t() :<
+	{
+		printf("panic\n");
+	}
+	:>
+	{
+		printf("log\n");
+	}
+}
+int main()
+{
+	t_t();
+	t_f();
+}

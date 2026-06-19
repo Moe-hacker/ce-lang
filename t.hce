@@ -1,0 +1,6 @@
+#[[ce_reg(func_t, type, _)]]
+#[[ce_pan(func_t, panic)]]
+#[[ce_dft(func_t, log)]]
+#[[ce_reg(func_f, type, _)]]
+#[[ce_pan(func_f, panic)]]
+#[[ce_dft(func_f, log)]]
