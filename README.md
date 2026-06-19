@@ -35,3 +35,44 @@ The tail will never wag the cat.
 So ce-lang will never break c syntax, except the old `:>` as `]` design.   
 But as ce will translate .ce to c, and if you only use `:>` as happy face in .ce, that's fine.    
 In one word, CE-lang makes a zipped error handling in C, and it's kawaii.      
+# CE-lang design goals:
+```ce
+// Register function type and failure condition
+#[[ce_reg(func, type, exp)]]
+// For example:
+#[[ce_reg(open, int, _<0)]]
+
+// Register function's panic and default handlers
+#[[ce_pan(func, panic)]]
+#[[ce_dft(func, def)]]
+// For example:
+#[[ce_pan(open, panic)]]
+#[[ce_dft(open, log)]]
+
+// So you can do:
+// Will call panic() if open returns < 0
+int fd = open("file.txt", O_RDONLY) :<;
+
+// Will call panic if open returns < 0,
+// and call log() if open returns >= 0
+int fd_2 = open("file2.txt", O_RDONLY) :<, :>;
+
+// Will call user defined panic and log logic.
+int fd_3 = open("file3.txt", O_RDONLY) :<
+{
+	printf("Panic in open with file3.txt\n");
+	exit(1);
+}
+:>
+{
+	printf("Log in open with file3.txt\n");
+}
+
+// Will call user defined panic logic, and default to log if not panic.
+int fd_4 = open("file4.txt", O_RDONLY) :<
+{
+	printf("Panic in open with file4.txt\n");
+	exit(1);
+}
+:>;
+```
