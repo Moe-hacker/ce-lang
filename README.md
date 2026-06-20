@@ -126,7 +126,7 @@ cwte just implements `:<` and `:>`, `and #[[ce_foo()]]`, the rest is just C code
 #[[ce_reg()]] is enforced, or ce will not know how to handle the error.        
 And, there will be many ubs, so always do a diff-check between .ce and .c, and make sure the generated code is what you want.    
 You can use _CE_DFT for `:>` and _CE_PAN for `:<`, just recover with one `sed`, so your IDE and clang-format will not scream at it. But for `foo() :<, :>`, your IDE will scream anyway, although these code are less in real-world case.    
-Cwte should be used step-by-step, and always check the generated code to make sure it's what you want. If it will be more ugly, immediately make a ctrl-z in your ide and fallback to the c way, we should never let the tail wag the cat.    
+Cwte should be used step-by-step, and always check the generated code to make sure it's what you want. If it will be more ugly, immediately make a ctrl-z in your ide and rollback to the c way, we should never let the tail wag the cat.    
 
 cwte will use line-no for internal variable name, so you will match generited code with .ce easily.    
 # Future:
