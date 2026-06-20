@@ -26,7 +26,7 @@ seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(accept4), 0) :<;
 seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(access), 0) :<;
 ```
 It's better, right? Dev happy, reader happy, PRs happy, LLM happy (with prompt), all happy.   
-It will be very useful in educational case, as you can use a `:<` to tell people "you should handle this error, but it's not the core logic for our code", and your example code will be more concise and readable.    
+It will also be very useful in educational case, as you can use a `:<` to tell people "you should handle this error, but it's not the core logic for our code", and your example code will be more concise and readable.    
 And the above code will be auto expanded to code like this:    
 ```c
 if(seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(accept), 0) != 0) {
