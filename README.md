@@ -16,7 +16,7 @@ These syntax will be translated to C code, you can use ce-mark for error handlin
 # The core:
 `:<` Is the only core feature, it's a tail after func call, for error handling.     
 The tail should never wag the cat, this means sad path handler should never pollute the core logic, and ce will also never pollute other c code.     
-~~The tail should never wag the cat also means `tail` command should not call `|cat` lol~~   
+The tail should never wag the cat also means `tail` command should not call `|cat` lol   
 
 # Why ce-mark:
 In ruri:      
