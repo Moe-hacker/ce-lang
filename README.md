@@ -26,7 +26,7 @@ The tail should never wag the cat also means `tail` command should not call `|ca
 - - Always make a backup to last working code.
 - - Always backup ceg itself.
 - - Cwte should NEVER be a compile-time dependency for released code.
-- - Never assume anything, like never assume your cat's tail will not push your cup to fall.
+- - Never assume anything, your cat's tail can push your cup to fall.
 
 # Why cwte:
 In ruri:      
