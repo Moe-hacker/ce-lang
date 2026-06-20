@@ -6,7 +6,7 @@ But, if you throw this doc to LLM, let LLM refine it to spec, and use LLM as you
 "I'm a lazy dev, and I used :< sad face to mark the code that mignt fail, as my assistant, you should implement the :< mark as error handling logic for these code".   
 And, the real cwte-generator will just be a pre-compile code generator for ruri. It will not act on other unnecessary features that I will not use it in my code.     
 # Version:
-v0.0, just a draft, not a spec or implementation yet.     
+0.0, just a draft, not a spec or implementation yet.     
 # About cwte:
 Cwte(cute) stands for "C with tailed error-handler/Cute way to handle error/~~cry to error~~", it's a cute and concise error handling extension for C, with zero syntax breaking, and the tail will never wag the cat.     
 Just a cute error handling extension for C.    
