@@ -19,7 +19,8 @@ The tail should never wag the cat, this means sad path handler should never poll
 The tail should never wag the cat also means `tail` command should not call `|cat` lol   
 # The philosophy:
 - The tail can/should/will/must never wag the cat.
-- Cwte should be reversible, if you don't like, thow it away and fallback to c, we are c users, not cwte users.    
+- Cwte should be reversible, if you don't like, thow it away and fallback to c.
+- We are c users, not cwte users.    
 # Why cwte:
 In ruri:      
 ```c
