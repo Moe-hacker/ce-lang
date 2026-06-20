@@ -17,16 +17,20 @@ ruri_check_seccomp_ret(res, container->no_warnings);
 res = seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(access), 0);
 ruri_check_seccomp_ret(res, container->no_warnings);
 ```
-Too ugly you see? My eyes scream, my small screen scream, my ADHD scream, my LLM scream, all scream.         
+Too ugly you see? I scream, my eye scream, my small screen scream, my ADHD scream, my LLM scream, all scream.         
 seccomp_rule_add() uses va_args, so if you don't use these complex code, you can only use a macro. But in cross-arch ci, it will bomb to TLE, as the pre-compile expansion performance of macro is not good, and qemu is slow.      
 So, I want a:     
 ```c
 #[[ce_reg(seccomp_rule_add, int, _<0)]]
+```
+Then:   
+```c
 seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(accept), 0) :<;
 seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(accept4), 0) :<;
 seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(access), 0) :<;
 ```
-It's better, right? Dev happy, reader happy, PRs happy, LLM happy (with prompt), all happy.   
+Now we have ice cream, but no more `I scream`.   
+Dev happy, reader happy, PRs happy, LLM happy (with prompt), all happy.   
 It will also be very useful in educational case, as you can use a `:<` to tell people "you should handle this error, but it's not the core logic for our code", and your example code will be more concise and readable.    
 And the above code will be auto expanded to code like this:    
 ```c
