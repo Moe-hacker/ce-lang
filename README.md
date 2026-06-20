@@ -22,11 +22,11 @@ The tail should never wag the cat also means `tail` command should not call `|ca
 - Cwte should be reversible, if you don't like, thow it away and fallback to c.
 - We are c users, not cwte users.    
 - Cwte is dangerous, the tail can bomb everything, so:
-- - Always check the generated code.
-- - Always make a backup to last working code.
-- - Always backup ceg itself.
-- - Cwte should NEVER be a compile-time dependency for released code.
-- - Never assume anything, your cat's tail can push your cup to fall.
+  - Always check the generated code.
+  - Always make a backup to last working code.
+  - Always backup ceg itself.
+  - Cwte should NEVER be a compile-time dependency for released code.
+  - Never assume anything, your cat's tail can make your cook fail.    
 
 # Why cwte:
 In ruri:      
