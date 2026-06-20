@@ -39,7 +39,7 @@ The tail will never wag the cat.
 So ce-mark will never break c syntax, except the old `:>` as `]` design.   
 But as ce will translate .ce to c, and if you only use `:>` as happy face in .ce, that's fine.    
 In one word, ce-mark makes a zipped error handling in C, and it's kawaii.      
-# Why we choose `:<`:
+# Why sad face `:<`:
 - Cute and readable, it's like a sad face, and it zips the error handling logic, and make the code more concise and readable.    
 - Zero syntax breaking, :< never affects C grammar.    
 - Explicit invalid-stat marker, if you leave a `:<`, `:>` or `]` after a function, your compiler will definitely scream.    
