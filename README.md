@@ -127,7 +127,7 @@ Maybe one day it can be C-Evolved, but at least these ideas shows that c is exte
 ```
           _.-'''-._
         .'         `. 
-      /   .'~~~,      \ 
+      /   .'~~~,     \ 
      |   /       \    |    
      |   |   :>.,/    |
      \   '.       ,___/~~~
