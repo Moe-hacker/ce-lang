@@ -1,10 +1,16 @@
 # WIP:
-Nothoing implemented yet, just some design ideas.    
+>[!WARNING]
+>Nothoing implemented yet, just some design ideas.    
+
 But, if you throw this doc to LLM, let LLM refine it to spec, and use LLM as your ceg, you have ce-mark right now.    
 "I'm a lazy dev, and I used :< sad face to mark the code that mignt fail, as my assistant, you should implement the :< mark as error handling logic for these code".   
-And, the real ce-generator will just be a pre-compile code generator for ruri. It will not act on other unnecessary features that I will not use it in my code.    
+And, the real ce-generator will just be a pre-compile code generator for ruri. It will not act on other unnecessary features that I will not use it in my code.     
+# Version:
+v0.0, just a draft, not a spec or implementation yet.     
 # About ce-mark:
-Just a cute error handling extension for C, with no syntax breaking, and the tail will never wag the cat.    
+Not Conformity European mark, we are not factory :>     
+Just a cute error handling extension for C.    
+With no syntax breaking, and the tail will never wag the cat.    
 We will just have a new happy face `:>` for default handling, and a sad face `:<` for error handling, and `#[[ce_foo()]]` for code generation.      
 These syntax will be translated to C code, you can use ce-mark for error handling, CE-generator transform it to C, and you compile/run/debug the generated C code.      
 # The core:
