@@ -16,7 +16,7 @@ These syntax will be translated to C code, you can use cwte for error handling, 
 In short, cwte is just for zipping complex unhappy path logic, and make it more readable.    
 # The core:
 `:<` Is the only core feature, it's a tail after func call, for error handling.     
-The tail should never wag the cat, this means sad path handler should never pollute the core logic, and ce will also never pollute other c code.     
+The tail should never wag the cat, this means sad path handler should never pollute the core logic, and cwte will also never pollute other c code.     
 The tail should never wag the cat also means `tail` command should not call `|cat` lol   
 # The philosophy:
 - Cwte has no super cow powers.    
@@ -64,10 +64,10 @@ if(seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(accept), 0) != 0) {
     warning("seccomp_rule_add", __FILE__, __LINE__, res, errno);
 }
 ```
-So that's cwte, C with better Error handling/Cute Error handling.    
+So that's cwte, a cute tail.    
 The tail will never wag the cat.    
 So cwte will never break c syntax, except the old `:>` as `]` design.   
-But as ce will translate .ce to c, and if you only use `:>` as happy face in .ce, that's fine.    
+But as cwte will translate .ce to c, and if you only use `:>` as happy face in .ce, that's fine.    
 In one word, cwte makes a zipped error handling in C, and it's kawaii.      
 # Why sad face `:<`:
 - Cute and readable, it's like a sad face, and it zips the error handling logic, and make the code more concise and readable.    
