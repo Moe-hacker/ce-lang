@@ -8,7 +8,7 @@ And, the real ce-generator will just be a pre-compile code generator for ruri. I
 # Version:
 v0.0, just a draft, not a spec or implementation yet.     
 # About cwte:
-cwte stands for "Cute way to handle error/C with tailed error-handler", it's a cute and concise error handling extension for C, with zero syntax breaking, and the tail will never wag the cat.     
+Cwte(cute) stands for "C with tailed error-handler/Cute way to handle error/~~cry to error~~", it's a cute and concise error handling extension for C, with zero syntax breaking, and the tail will never wag the cat.     
 Just a cute error handling extension for C.    
 With no syntax breaking, and the tail will never wag the cat.    
 We will just have a new happy face `:>` for default handling, and a sad face `:<` for error handling, and `#[[ce_foo()]]` for code generation.      
