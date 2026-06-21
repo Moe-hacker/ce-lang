@@ -1,4 +1,7 @@
-fmt:
+all :
+	cargo build --release
+	cp target/release/cwte .
+fmt :
 	sed -i "s/:</_CE_PAN/g" t.ce
 	sed -i "s/:>/_CE_DFT/g" t.ce
 	clang-format -i --assume-filename=t.c t.ce 
@@ -10,3 +13,6 @@ fmt:
 	sed -i "s/:</_CE_PAN/g" test.ce
 	clang-format -i --assume-filename=t.c test.ce
 	sed -i "s/_CE_PAN/:</g" test.ce
+test:
+	cargo build
+	cp target/debug/cwte .
