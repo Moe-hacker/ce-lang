@@ -1,7 +1,9 @@
 use std::env;
 use std::fs;
 use std::io::Write;
-fn print_nautilus(file: &str, line_no: usize, content: &str) {
+// Print a nautilus with file name, line number and content.
+// This is a TODO note.
+fn print_nautilus(file: &str, line_no: usize, content: &str, enforce: bool) {
     println!("Cwte tail at {} line {}:", file, line_no);
     println!(">>");
     println!(">>  {}", content);
@@ -12,6 +14,10 @@ fn print_nautilus(file: &str, line_no: usize, content: &str) {
     println!(
         "::}} Here's a nautilus, have an ice cream and write a fix, or it'll become a fossil QwQ"
     );
+    if enforce {
+        // If enforce is true, panic to prevent compiling.
+        panic!("Cwte ::}} tail is enforced, you must fix this before compiling.");
+    }
 }
 
 fn main() {
@@ -28,7 +34,7 @@ fn main() {
     for (i, line) in lines.iter().enumerate() {
         // If the line contains `::}`, print the nautilus and skip this line.
         if line.contains("::}") {
-            print_nautilus(&args[1], i + 1, line);
+            print_nautilus(&args[1], i + 1, line, false);
             // Replace ::} with empty string, and write the line to the output file.
             let fixed = line.replace("::}", "");
             writeln!(output, "{}", fixed).expect("Failed to write to file");

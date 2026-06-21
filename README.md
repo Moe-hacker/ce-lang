@@ -18,6 +18,14 @@ Administrator. It usually boils down to these three things:
 
 # Version:
 0.0.1, only ::} implemented, and it's just a readable todo note, not a real code generator.       
+```
+Cwte tail at test.ce line 10:
+>>
+>>      t() ::};
+>>
+::} Here's a nautilus, have an ice cream and write a fix, or it'll become a fossil QwQ
+```
+
 # About cwte:
 Cwte(cute) stands for "C with tailed error-handler/Cute way to handle error/~~cry to error~~", it's a cute and concise error handling extension for C, with zero syntax breaking, and the tail will never wag the cat.     
 Just a cute error handling extension for C.    
