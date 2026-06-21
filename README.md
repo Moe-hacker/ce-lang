@@ -15,8 +15,9 @@ Administrator. It usually boils down to these three things:
     #2) Think before you type.
     #3) With great power comes great responsibility.
 ```
+
 # Version:
-0.0, just a draft, not a spec or implementation yet.     
+0.0.1, only ::} implemented, and it's just a readable todo note, not a real code generator.       
 # About cwte:
 Cwte(cute) stands for "C with tailed error-handler/Cute way to handle error/~~cry to error~~", it's a cute and concise error handling extension for C, with zero syntax breaking, and the tail will never wag the cat.     
 Just a cute error handling extension for C.    
