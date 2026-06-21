@@ -1,11 +1,11 @@
 # WIP:
 >[!WARNING]
->Nothoing implemented yet, just some design ideas.    
+>Nothing implemented yet, just some design ideas.    
 
 But, if you throw this doc to LLM, let LLM refine it to spec, and use LLM as your ceg, you have cwte right now.    
-"I'm a lazy dev, and I used :< sad face to mark the code that mignt fail, as my assistant, you should implement the :< mark as error handling logic for these code".   
+"I'm a lazy dev, and I used :< sad face to mark the code that might fail, as my assistant, you should implement the :< mark as error handling logic for these code".   
 Or just fork this repo, and implement yourself, cwte and `:<` shouldn't be my own patent, and I have no time on it, I just want to have an ice cream.     
-And, the real cwte-generator will just be a pre-compile code generator for ruri. It will not act on other unnecessary features that I will not use it in my code.     
+And, the real cwte-generator will just be a pre-compile code generator for ruri. It will not act on other unnecessary features I will not use it in my code.     
 # Version:
 0.0, just a draft, not a spec or implementation yet.     
 # About cwte:
@@ -37,7 +37,7 @@ The tail should never wag the cat also means `tail` command should not call `|ca
   - Cwte should NEVER be a compile-time dependency for released code.
   - Never assume anything, your cat's tail can make your cook fail.    
 
-# Project scructure:
+# Project structure:
 A cwte project should be like:
 ```
 project
@@ -45,7 +45,7 @@ project
 │   └── foo.c // The ONLY code as true source code, for testing and publishing.
 └── srce // For cwte code, only TEMPORARY code for developing.
     ├── foo.ce // Cwte code. For reading and developing.
-    └── foo.hce // Cwte defination, for registering func type and handler.
+    └── foo.hce // Cwte definition, for registering func type and handler.
 ```
 
 # Why cwte:
@@ -105,7 +105,7 @@ In one word, cwte makes a zipped error handling in C, and it's kawaii.
 #[[ce_dft(open, log)]]
 ```
 
-.hce shoud only contain the three simple commands, and other definations, like `#define panic()`, `#define log()`, and `typedef` should be in .ce or your .h, as .hce is just `happy c ending/handle c error` delclaration file.    
+.hce should only contain the three simple commands, and other definations, like `#define panic()`, `#define log()`, and `typedef` should be in .ce or your .h, as .hce is just `happy c ending/handle c error` delclaration file.    
 # cwte design goals:
 ```c
 // Will call panic() if open returns < 0
@@ -145,12 +145,12 @@ And, there will be many ubs, so always do a diff-check between .ce and .c, and m
 You can use _CE_DFT for `:>` and _CE_PAN for `:<`, just recover with one `sed`, so your IDE and clang-format will not scream at it. But for `foo() :<, :>`, your IDE will scream anyway, although these code are less in real-world case.    
 Cwte should be used step-by-step, and always check the generated code to make sure it's what you want. If it will be more ugly, immediately make a ctrl-z in your ide and rollback to the c way, we should never let the tail wag the cat.    
 
-cwte will use line-no for internal variable name, so you will match generited code with .ce easily.    
+cwte will use line-no for internal variable name, so you will match generated code with .ce easily.    
 # Future:
 Maybe we can have a `#[[ce_enforce(func)]]` to enforce you catch result for func in cwte, and `:D` for ignoring the error, and `:o` for only log when error, `:~ { ... }` for a custom handler, and even `::}` to output a nautilus in ceg, and use `::}` as a readable todo note.        
 Maybe one day it can be C-Way-To-Evolve, but at least these ideas shows that c is extensible, and cwte is also.    
 Cwte never assumes it won't become a fossil.   
-"But if we have to evolve, are there a trackable way?"    
+"But if we have to evolve, is there a trackable way?"    
 # Ascii logo:
 ```
          _-''''-._
@@ -163,3 +163,9 @@ Cwte never assumes it won't become a fossil.
        `.          /~~~~~~~~
          '-.____. /~~~~~~~~~~~
 ```
+
+<p align="center">柔らかな皮膚しかない理由は</p>
+<p align="center">人が人の傷みを聴くためだ</p>
+<p align="center">急げ悲しみ、翼に変われ</p>
+<p align="center">急げ傷跡、羅針盤になれ</p>
+<p align="center">まだ飛べない雛たちみたいに</p>
