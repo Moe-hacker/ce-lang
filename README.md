@@ -17,7 +17,7 @@ In short, cwte is just for zipping complex unhappy path logic, and make it more 
 # The core:
 `:<` Is the only core feature, it's a tail after func call, for error handling.     
 The tail should never wag the cat, this means sad path handler should never pollute the core logic, and cwte will also never pollute other c code.     
-The tail should never wag the cat also means `tail` command should not call `|cat` lol   
+The tail should never wag the cat also means `tail` command should not call `|cat` :D   
 # The philosophy:
 - Cwte has no super cow powers.    
 - Cwte is a postfix, a tail, but not the cat (C-lang).    
