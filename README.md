@@ -21,11 +21,13 @@ Administrator. It usually boils down to these three things:
 # Version:
 0.0.1, only ::} implemented, and it's just a readable todo note, not a real code generator.       
 ```
-Cwte tail at test.ce line 10:
+Cwte tail at ./test.ce line 10:
 >>
 >>      t() ::};
 >>
-::} Here's a nautilus, have an ice cream and write a fix, or it'll become a fossil QwQ
+::} Here's a nautilus, have an ice cream and write a fix,
+    and don't left it to be a fossil QwQ
+Cwte processing completed. Output written to ./test.ce.c
 ```
 
 # About cwte:

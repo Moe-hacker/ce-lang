@@ -7,13 +7,14 @@ use rustix::fs::{MemfdFlags, memfd_create};
 use rustix::fs::{SealFlags, fcntl_add_seals};
 use std::env;
 use std::fs;
+use std::fs::File;
 use std::io::Read;
 use std::io::Seek;
 use std::io::Write;
 use std::os::fd::AsFd;
 
 // Add a hook for testing build,
-// when any panic, print /proc/pid/fd, 
+// when any panic, print /proc/pid/fd,
 // and sleep to freeze forever to just wait user to kill it.
 #[cfg(debug_assertions)]
 fn setup_panic_hook() {
@@ -24,7 +25,11 @@ fn setup_panic_hook() {
         if let Ok(entries) = fs::read_dir(format!("/proc/{}/fd", pid)) {
             for entry in entries.flatten() {
                 if let Ok(target) = fs::read_link(entry.path()) {
-                    eprintln!("{} -> {}", entry.file_name().to_string_lossy(), target.display());
+                    eprintln!(
+                        "{} -> {}",
+                        entry.file_name().to_string_lossy(),
+                        target.display()
+                    );
                 }
             }
         }
@@ -45,36 +50,31 @@ fn print_nautilus(file: &str, line_no: usize, content: &str, enforce: bool) {
     // Cooked by rust at the beginning, now I cry.
     // `}` should be `}}` in rust fmt.
     // I miss my cprintf now.
-    println!(
-        "::}} Here's a nautilus, have an ice cream and write a fix, or it'll become a fossil QwQ"
-    );
+    println!("::}} Here's a nautilus, have an ice cream and write a fix,");
+    println!("    and don't left it to be a fossil QwQ");
     if enforce {
         // If enforce is true, panic to prevent compiling.
         panic!("Cwte ::}} tail is enforced, you must fix this before compiling.");
     }
 }
-fn main() {
-    #[cfg(debug_assertions)]
-    setup_panic_hook();
-    let args: Vec<String> = env::args().collect();
-    if args.len() < 2 {
-        println!("Usage: {} <file>", args[0]);
-        return;
-    }
-    let content = fs::read_to_string(&args[1]).expect("Failed to read file");
-    // Open a new fd for writing by line, with line number.
-    let lines: Vec<&str> = content.lines().collect();
-    let output_file = format!("{}.c", args[1]);
+fn nautilus_layer(mut input: File, file: &str) -> File {
+    // Read input to string.
+    let mut content = String::new();
+    input
+        .read_to_string(&mut content)
+        .expect("Failed to read input file");
+    // memfd magic!
     let fd = memfd_create(
         "cwte_output",
         MemfdFlags::CLOEXEC | MemfdFlags::ALLOW_SEALING,
     )
     .expect("Failed to create memfd");
     let mut mfd_file = fs::File::from(fd);
-    for (i, line) in lines.iter().enumerate() {
+    // Now, erase the `::}` in content, and print the nautilus for it.
+    for (i, line) in content.lines().enumerate() {
         // If the line contains `::}`, print the nautilus and skip this line.
         if line.contains("::}") {
-            print_nautilus(&args[1], i + 1, line, false);
+            print_nautilus(file, i + 1, line, false);
             // Replace ::} with empty string, and write the line to the output file.
             let fixed = line.replace("::}", "");
             writeln!(mfd_file, "{}", fixed).expect("Failed to write to file");
@@ -86,7 +86,29 @@ fn main() {
     // Make the memfd immutable to prevent further modification.
     mfd_file.sync_all().expect("Failed to sync memfd");
     fcntl_add_seals(mfd_file.as_fd(), SealFlags::WRITE).expect("Failed to add seals to memfd");
+    // Return the memfd file for further processing.
+    mfd_file
+}
+
+fn main() {
+    /*
+     * We will never release any memfd file, kernel will help us do that.
+     * Say thanks to the kernel, say thanks to memfd,
+     * and have an ice cream.
+     */
+    #[cfg(debug_assertions)]
+    setup_panic_hook();
+    let args: Vec<String> = env::args().collect();
+    if args.len() < 2 {
+        println!("Usage: {} <file>", args[0]);
+        return;
+    }
+    // Open the input file.
+    let input_file = fs::File::open(&args[1]).expect("Failed to open input file");
+    // Process the input file with nautilus layer, and get the memfd file.
+    let mut mfd_file = nautilus_layer(input_file, &args[1]);
     // Write the content of memfd to the output file.
+    let output_file = format!("{}.c", args[1]);
     let mut output = fs::File::create(&output_file).expect("Failed to create output file");
     let mut memfd_content = Vec::new();
     mfd_file
