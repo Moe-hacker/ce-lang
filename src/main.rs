@@ -11,6 +11,30 @@ use std::io::Read;
 use std::io::Seek;
 use std::io::Write;
 use std::os::fd::AsFd;
+
+// Add a hook for testing build,
+// when any panic, print /proc/pid/fd, 
+// and sleep to freeze forever to just wait user to kill it.
+#[cfg(debug_assertions)]
+fn setup_panic_hook() {
+    std::panic::set_hook(Box::new(|info| {
+        eprintln!("Panic occurred: {}", info);
+        let pid = std::process::id();
+        eprintln!("Listing /proc/{}/fd:", pid);
+        if let Ok(entries) = fs::read_dir(format!("/proc/{}/fd", pid)) {
+            for entry in entries.flatten() {
+                if let Ok(target) = fs::read_link(entry.path()) {
+                    eprintln!("{} -> {}", entry.file_name().to_string_lossy(), target.display());
+                }
+            }
+        }
+        eprintln!("Freezing forever. Waiting to be killed...");
+        loop {
+            std::thread::sleep(std::time::Duration::from_secs(3600));
+        }
+    }));
+}
+
 // Print a nautilus with file name, line number and content.
 // The `::}` is a cwte TODO note.
 fn print_nautilus(file: &str, line_no: usize, content: &str, enforce: bool) {
@@ -30,6 +54,8 @@ fn print_nautilus(file: &str, line_no: usize, content: &str, enforce: bool) {
     }
 }
 fn main() {
+    #[cfg(debug_assertions)]
+    setup_panic_hook();
     let args: Vec<String> = env::args().collect();
     if args.len() < 2 {
         println!("Usage: {} <file>", args[0]);
