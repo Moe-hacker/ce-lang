@@ -54,16 +54,16 @@ fn print_nautilus(file: &str, line_no: usize, content: &str, enforce: bool) {
     println!("{}", ">>".yellow());
     println!("{}{}", ">>  ".yellow(), content.blue());
     println!("{}", ">>".yellow());
-    // Cooked by rust at the beginning, now I cry.
-    // `}` should be `}}` in rust fmt.
-    // I miss my cprintf now.
     println!(
         "{}",
-        "::}} Here's a nautilus, have an ice cream and write a fix,".yellow()
+        "::} Here's a nautilus, have an ice cream and write a fix,".yellow()
     );
     println!("{}", "    and don't left it to be a fossil QwQ".yellow());
     if enforce {
         // If enforce is true, panic to prevent compiling.
+        // Cooked by rust at the beginning, now I cry.
+        // `}` should be `}}` in rust fmt.
+        // I miss my cprintf now.
         panic!("Cwte ::}} tail is enforced, you must fix this before compiling.");
     }
 }
