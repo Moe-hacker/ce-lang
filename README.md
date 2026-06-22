@@ -2,7 +2,7 @@
 >[!WARNING]
 >Nothing useful yet, just some design ideas.    
 
-But, if you throw this doc to LLM, let LLM refine it to spec, and use LLM as your ceg, you have cwte right now.    
+But, if you throw this doc to LLM, let LLM refine it to spec, and use LLM as your cwte, you have cwte right now.    
 >"I'm a lazy dev, and I used :< sad face to mark the code that might fail, as my assistant, you should implement the :< mark as error handling logic for these code".   
 
 Or just fork this repo, and implement yourself, cwte and `:<` shouldn't be my own patent, and I have no time on it, I just want to have an ice cream.     
@@ -61,7 +61,7 @@ The tail should never wag the cat also means `tail` command should not call `|ca
 - Cwte is dangerous, the tail can make everything cooked, so:
   - Always check the generated code.
   - Always make a backup to last working code.
-  - Always backup ceg itself.
+  - Always backup cwte itself.
   - The more cwte you use, the longer tail you have.   
   - Always check where's your cat.
   - If cwte wrote the wrong code, the dev should scream. 
@@ -120,7 +120,7 @@ In one word, cwte makes a zipped error handling in C, and it's kawaii.
 - Cute and readable, it's like a sad face, and it zips the error handling logic, and make the code more concise and readable.    
 - Zero syntax breaking, :< never affects C grammar.    
 - Explicit invalid-stat marker, it's illegal, if you leave a `:<`, `:>` or `]` after a function, your compiler will definitely scream.    
-- Enforced pre-compile code generation and error handling, `:<` is not a todo comment, but it's easier to be done. With LLM or ceg.    
+- Enforced pre-compile code generation and error handling, `:<` is not a todo comment, but it's easier to be done. With LLM or cwte.    
 # The .hce header:
 .hce stands for `happy c ending/handle c error`, it's just a kv-map to register error expr and handler for funcs. maybe we can also have standard hce conf like posix.hce.      
 ```c
@@ -196,7 +196,7 @@ Cwte should be used step-by-step, and always check the generated code to make su
 
 cwte will use line-no for internal variable name, so you will match generated code with .ce easily.    
 # Future:
-Maybe we can have a `#[[ce_enforce(func)]]` to enforce you catch result for func in cwte, and `:D` for ignoring the error, and `:o` for only log when error, `:~ { ... }` for a custom handler, and even `::}` to output a nautilus in ceg, and use `::}` as a readable todo note.        
+Maybe we can have a `#[[ce_enforce(func)]]` to enforce you catch result for func in cwte, and `:D` for ignoring the error, and `:o` for only log when error, `:~ { ... }` for a custom handler, and even `::}` to output a nautilus in cwte, and use `::}` as a readable todo note.        
 Maybe one day it can be C-Way-To-Evolve, but at least these ideas shows that c is extensible, and cwte is also.    
 Cwte never assumes it won't become a fossil.   
 "But if we have to evolve, is there a trackable way?"    
