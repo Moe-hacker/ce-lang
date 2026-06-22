@@ -45,7 +45,7 @@ fn setup_panic_hook() {
 // The `::}` is a cwte TODO note.
 fn print_nautilus(file: &str, line_no: usize, content: &str, enforce: bool) {
     println!(
-        "{}{}{}{}:",
+        "\n{}{}{}{}:",
         "Cwte tail at ".yellow(),
         file.to_string().blue(),
         " line ".yellow(),
@@ -58,7 +58,7 @@ fn print_nautilus(file: &str, line_no: usize, content: &str, enforce: bool) {
         "{}",
         "::} Here's a nautilus, have an ice cream and write a fix,".yellow()
     );
-    println!("{}", "    and don't left it to be a fossil QwQ".yellow());
+    println!("{}", "    and don't left it to be a fossil QwQ\n".yellow());
     if enforce {
         // If enforce is true, panic to prevent compiling.
         // Cooked by rust at the beginning, now I cry.
@@ -68,6 +68,13 @@ fn print_nautilus(file: &str, line_no: usize, content: &str, enforce: bool) {
     }
 }
 fn nautilus_layer(mut input: File, file: &str) -> File {
+    /*
+     * Nautilus mark ::} is cwte TODO mark.
+     */
+    // Seek to the beginning of the file.
+    input
+        .seek(std::io::SeekFrom::Start(0))
+        .expect("Failed to seek input file");
     // Read input to string.
     let mut content = String::new();
     input
@@ -99,7 +106,61 @@ fn nautilus_layer(mut input: File, file: &str) -> File {
     // Return the memfd file for further processing.
     mfd_file
 }
-
+fn linter_layer(mut input: File, file: &str) -> File {
+    /*
+     * :D is cwte ignore forever mark.
+     * This will bypass #[[ce_enforce(func)]] in the future.
+     *
+     */
+    // Seek to the beginning of the file before reading.
+    input
+        .seek(std::io::SeekFrom::Start(0))
+        .expect("Failed to seek input file");
+    // Read input to string.
+    let mut content = String::new();
+    input
+        .read_to_string(&mut content)
+        .expect("Failed to read input file");
+    // memfd magic!
+    let fd = memfd_create(
+        "cwte_output",
+        MemfdFlags::CLOEXEC | MemfdFlags::ALLOW_SEALING,
+    )
+    .expect("Failed to create memfd");
+    let mut mfd_file = fs::File::from(fd);
+    // Now, erase the `:D` in content, and print the nautilus for it.
+    for (i, line) in content.lines().enumerate() {
+        // If the line contains `:D`, print the nautilus and skip this line.
+        if line.contains(":D") {
+            // !FIXME
+            // print we got :D at line i, and the content of this line.
+            println!(
+                "\n{}{}{}{}:",
+                "Cwte linter at ".yellow(),
+                file.to_string().blue(),
+                " line ".yellow(),
+                i.to_string().blue()
+            );
+            println!("{}", ">>".yellow());
+            println!("{}{}", ">>  ".yellow(), line.blue());
+            println!("{}", ">>".yellow());
+            println!("{}", ":D you choose to ignore this.".yellow());
+            //
+            //
+            // Replace :D with empty string, and write the line to the output file.
+            let fixed = line.replace(":D", "");
+            writeln!(mfd_file, "{}", fixed).expect("Failed to write to file");
+            continue;
+        }
+        // Or, write the line to the output file.
+        writeln!(mfd_file, "{}", line).expect("Failed to write to file");
+    }
+    // Make the memfd immutable to prevent further modification.
+    mfd_file.sync_all().expect("Failed to sync memfd");
+    fcntl_add_seals(mfd_file.as_fd(), SealFlags::WRITE).expect("Failed to add seals to memfd");
+    // Return the memfd file for further processing.
+    mfd_file
+}
 fn main() {
     /*
      * We will never release any memfd file, kernel will help us do that.
@@ -117,6 +178,8 @@ fn main() {
     let input_file = fs::File::open(&args[1]).expect("Failed to open input file");
     // Process the input file with nautilus layer, and get the memfd file.
     let mut mfd_file = nautilus_layer(input_file, &args[1]);
+    // Process the memfd file with linter layer, and get the new memfd file.
+    mfd_file = linter_layer(mfd_file, &args[1]);
     // Write the content of memfd to the output file.
     let output_file = format!("{}.c", args[1]);
     let mut output = fs::File::create(&output_file).expect("Failed to create output file");
@@ -131,8 +194,10 @@ fn main() {
         .write_all(&memfd_content)
         .expect("Failed to write to output file");
     println!(
-        "{}{}",
-        "Cwte processing completed. Output written to ".green(),
-        output_file.blue()
+        "{}{}{}",
+        "\nCwte processing completed. Output written to ".green(),
+        output_file.blue(),
+        " >w<!!!".yellow()
     );
+    println!("{}", "I hope I'm just a cute tail...".green());
 }
