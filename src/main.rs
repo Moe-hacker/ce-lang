@@ -82,7 +82,7 @@ fn cwte_generator(input: &str, output: &str) {
         "{}{}{}",
         "\nCwte processing completed. Output written to ".green(),
         output.blue(),
-        " >w<!!!".yellow()
+        " ::::<".yellow()
     );
     println!("{}", "I hope I'm just a cute tail...".green());
 }
@@ -110,7 +110,7 @@ fn scmp_generator(input: &str, output: &str) {
         "{}{}{}",
         "\nCwte processing completed. Output written to ".green(),
         output.blue(),
-        " >w<!!!".yellow()
+        " ::::<".yellow()
     );
     println!("{}", "I hope I'm just a cute tail...".green());
 }

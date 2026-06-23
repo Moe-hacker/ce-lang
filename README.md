@@ -1,3 +1,4 @@
+
 # WIP:
 >[!WARNING]
 >Maybe not useful for you, just some design ideas.    
@@ -39,7 +40,7 @@ Cwte processing completed. Output written to ./test.ce.c
 ```
 And I had a special rule for seccomp.c in ruri, so you can already see cwte in ruri.    
 Anyway I've successfully made a 1853->1210 line code reduction in seccomp.c, 34.7% code reduction, that's a good start.    
-# About cwte:
+# ::::< About cwte:
 "Let's zip the tail, and now we have a fuwafuwa cat".   
 Cwte (cute) stands for "C with tailed error-handler/Cute way to handle error/~~Cry to error~~/~~C-Way-To-Evolve (Oh no, never let tail wag cat)~~", it's a cute and concise error handling extension for C, with zero syntax breaking, and the tail will never wag the cat.     
 Just a cute error handling extension for C.    

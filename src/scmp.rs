@@ -1,3 +1,4 @@
+use colored::Colorize;
 use rustix::fs::{MemfdFlags, memfd_create};
 use rustix::fs::{SealFlags, fcntl_add_seals};
 use std::fs;
@@ -6,7 +7,6 @@ use std::io::Read;
 use std::io::Seek;
 use std::io::Write;
 use std::os::fd::AsFd;
-use colored::Colorize;
 
 pub fn scmp_layer(mut input: File, file: &str) -> File {
     /*
@@ -41,7 +41,11 @@ pub fn scmp_layer(mut input: File, file: &str) -> File {
             // Replace ::} with empty string, and write the line to the output file.
             let fixed = line.replace(":<", "");
             writeln!(mfd_file, "res={}", fixed).expect("Failed to write to file");
-            writeln!(mfd_file, "ruri_check_seccomp_ret(res, container->no_warnings);").expect("Failed to write to file");
+            writeln!(
+                mfd_file,
+                "ruri_check_seccomp_ret(res, container->no_warnings);"
+            )
+            .expect("Failed to write to file");
             continue;
         }
         // Or, write the line to the output file.
