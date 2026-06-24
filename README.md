@@ -65,6 +65,7 @@ The tail should never wag the cat also means `tail` command should not call `|ca
 - Cwte is a postfix, a tail, but not the cat (C-lang).    
 - The tail can/should/will/must never wag the cat.
 - Cwte should be reversible, if you don't like, thow it away and rollback to c.
+- Cwte should not spread any bullshit, or human auditor shuld fire it.
 - We are c users, not cwte users.    
 - Cwte is dangerous, the tail can make everything cooked, so:
   - Always check the generated code.
