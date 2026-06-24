@@ -98,6 +98,8 @@ The tail should never wag the cat also means `tail` command should not call `|ca
 
 For `scmp` mode, the generated code should be nearly zero-diff with the original code. So that you can always fire cwte and rollback to the original code.    
 For `gen` mode, the generated code should be at least fully readable and auditable, and you can always get a diff check for the generated code to see if it's what you want.    
+You should never use cwte in CI or any production code, as cwte is just a dev-stage-only code generator.    
+Cwte should always be audited by human, it's just an agent.    
 Anyway, trust the c code, not the cwte code and cwte-generator.    
 
 # Project structure:
