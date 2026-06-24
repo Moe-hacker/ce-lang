@@ -13,16 +13,6 @@ But, if you throw this doc to LLM, let LLM refine it to spec, and use LLM as you
 Or just fork this repo, and implement yourself, cwte and `:<` shouldn't be my own patent, and I have no time on it, I just want to have an ice cream.     
 And, the real cwte-generator will just be a dev-stage-only code generator for ruri. It will not act on other unnecessary features I will not use it in my code.     
 # Warning:
->[!WARNING]
->Cwte should and will always be a tail, I'm the developer of ruri, not a rust developer.
->
->It should be stable and simple, even not perfect at all, and with many bullshit hacks.
->
->Don't ask me why a f**king source-to-source code generator use so much kernel features, I had tons of syscalls in ruri, they are not ice cream at all.
->
->I didn't learn rust at all, so I also didn't trust thc code I/LLMs wrote. Each layer of cwte should be explicit and traceable, so I can always check the if the gray box give me the right code. 
-
-
 As cwte can bomb everything, it should be extremely careful to use.     
 ```
 We trust you have received the usual lecture from cwte project.
@@ -96,7 +86,7 @@ The tail should never wag the cat also means `tail` command should not call `|ca
   (generated .c code)
         |
         v
-    compile/run/debug
+   compile/run/debug
 ```
 
 For `scmp` mode, the generated code should be nearly zero-diff with the original code. So that you can always fire cwte and rollback to the original code.    
@@ -182,6 +172,16 @@ In one word, cwte makes a zipped error handling in C, and it's kawaii.
 
 .hce should only contain the three simple commands, and other definations, like `#define panic()`, `#define log()`, and `typedef` should be in .ce or your .h, as .hce is just `happy c ending/handle c error` delclaration file.    
 # ::::< cwte implementation:
+>[!WARNING]
+>Cwte should and will always be a tail, I'm the developer of ruri, not a rust developer.
+>
+>It should be stable and simple, even not perfect at all, and with many bullshit hacks.
+>
+>Don't ask me why a f**king source-to-source code generator use so much kernel features, I had tons of syscalls in ruri, they are not ice cream at all.
+>
+>I didn't learn rust at all, so I also didn't trust thc code I/LLMs wrote. Each layer of cwte should be explicit and traceable, so I can always check the if the gray box give me the right code. 
+
+
 >"Ohhhhh, memfd, silver bullet for saving data and IPC, so cool, so leeme cook."
 
 cwte generator will be a fully memfd-based immutable artifact pipeline ~~(so fd pipeline is also fp)~~ design, we use memfd to save each layer, and make it immutable to the next layer, and each layer will only act on one feature, without other side effects to the generated code.    
