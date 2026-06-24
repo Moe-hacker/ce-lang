@@ -14,7 +14,11 @@ fmt :
 	sed -i "s/:</_CE_PAN/g" seccomp.ce
 	clang-format -i --assume-filename=t.c seccomp.ce
 	sed -i "s/_CE_PAN/:</g" seccomp.ce
+	cargo fmt
 
 test:
 	cargo build
 	cp target/debug/cwte .
+
+clean:
+	rm *.cei
