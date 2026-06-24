@@ -225,6 +225,9 @@ Cwte never assumes it won't become a fossil.
        `.          /:::::::<
          '-.____. /::::::::::<
 
+"Abstraction turns reality into a black box."
+"When the black box springs a leak, out comes Cthulhu."
+
 We trust you have received the usual lecture from cwte project.
 It usually boils down to these three things:
 
