@@ -76,12 +76,10 @@ The tail should never wag the cat also means `tail` command should not call `|ca
   - Always check the generated code.
   - Always make a backup to last working code.
   - Always backup cwte itself.
-  - The longer tail you make, the less ice cream you have.   
   - Always check where's your cat.
   - If cwte wrote the wrong code, the dev should scream. 
   - Always be ready to fire cwte, and make a LLM code regen instead.
   - Cwte should NEVER be a compile-time dependency for released code.
-- Never assume anything, your cat's tail can also make you copy-fail.    
 
 # ::::< The goal:
 ```
@@ -107,6 +105,7 @@ For `scmp` mode, the generated code should be nearly zero-diff with the original
 For `gen` mode, the generated code should be at least fully readable and auditable, and you can always get a diff check for the generated code to see if it's what you want.    
 You should never use cwte in CI or any production code, as cwte is just a dev-stage-only code generator.    
 Cwte should always be audited by human, it's just an agent.    
+In one word, cwte just deferres `:<` from .ce to .c, and anyway `:<` should be expanded to C code.    
 Anyway, trust the c code, not the cwte code and cwte-generator.    
 # ::::< The non-goal:
 There's no silver bullet in C programming.    
@@ -115,7 +114,7 @@ If you expect something like:
 ```c
 foo(bar() :<, buz());
 ```
-Then remove your brain. The only way to implement this is to use gnu extension `({ ... })` or even something like in-place ffi, and this is not a good idea. C spec didn't defined the order of evaluation of bar() and buz(), and if bar() allocates a resource, will freeing it in :< be conflict with foo()'s logic?     
+Then remove your brain. The only way to implement this is to use gnu extension `({ ... })` or even something like in-place ffi, and this is not a good idea. C spec didn't defined the order of evaluation of bar() and buz(), that's already a hell, and if bar() allocates a resource, will freeing it in :< be conflict with foo()'s logic?     
 And the generated code will be unreadable and un-auditable after that, considering the error-handler is a dangerous side-effect, as an accuountable tail, cwte should never try that.        
 And if you expect complex AST parsing, cwte might never do that. The more complex features means the more complex bugs, and you will get many weird bugs if you don't have enough PLT knowledge and a good test coverage.    
 # ::::< Project structure:
