@@ -1,6 +1,6 @@
 #[cfg(debug_assertions)]
 use crate::debug;
-use crate::lineno;
+use crate::preproc;
 use colored::Colorize;
 use rustix::fs::{MemfdFlags, memfd_create};
 use rustix::fs::{SealFlags, fcntl_add_seals};
@@ -43,7 +43,7 @@ pub fn scmp_layer(mut input: File, file: &str) -> File {
         if line.contains(":<") {
             // Replace ::} with empty string, and write the line to the output file.
             let fixed = line.replace(":<", "");
-            writeln!(mfd_file, "res={}", lineno::erase_line_no_mark(&fixed))
+            writeln!(mfd_file, "res={}", preproc::erase_line_no_mark(&fixed))
                 .expect("Failed to write to file");
             writeln!(
                 mfd_file,

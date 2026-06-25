@@ -1,7 +1,6 @@
-//use colored::*;
 #[cfg(debug_assertions)]
 use crate::debug;
-use crate::lineno;
+use crate::preproc;
 use colored::Colorize;
 use rustix::fs::{MemfdFlags, memfd_create};
 use rustix::fs::{SealFlags, fcntl_add_seals};
@@ -44,13 +43,13 @@ pub fn linter_layer(mut input: File, file: &str) -> File {
                 "Cwte linter at ".yellow(),
                 file.to_string().blue(),
                 " line ".yellow(),
-                lineno::get_line_no(line).unwrap_or(0).to_string().blue()
+                preproc::get_line_no(line).unwrap_or(0).to_string().blue()
             );
             println!("{}", ">>".yellow());
             println!(
                 "{}{}",
                 ">>  ".yellow(),
-                lineno::erase_line_no_mark(line).blue()
+                preproc::erase_line_no_mark(line).blue()
             );
             println!("{}", ">>".yellow());
             println!("{}", ":D you choose to ignore this.".yellow());

@@ -4,9 +4,9 @@
  * and I have never learned rust in fact.
  */
 mod debug;
-mod lineno;
 mod linter;
 mod nautilus;
+mod preproc;
 mod scmp;
 use clap::{Parser, Subcommand};
 use colored::*;
@@ -34,16 +34,16 @@ enum Commands {
 fn cwte_generator(input: &str, output: &str) {
     let input_file = fs::File::open(input).expect("Failed to open input file");
     // Process the input file with prepare layer, and get the memfd file.
-    let mut mfd_file = lineno::clang_format_prepare_layer(input_file);
-    mfd_file = lineno::prepare_layer(mfd_file);
+    let mut mfd_file = preproc::clang_format_prepare_layer(input_file);
+    mfd_file = preproc::prepare_layer(mfd_file);
     // Process the input file with nautilus layer, and get the memfd file.
     mfd_file = nautilus::nautilus_layer(mfd_file, input);
     // Process the memfd file with linter layer, and get the new memfd file.
     mfd_file = linter::linter_layer(mfd_file, input);
     // Process the memfd file with final layer, and get the new memfd file.
-    mfd_file = lineno::final_layer(mfd_file);
+    mfd_file = preproc::final_layer(mfd_file);
     // Format the output with clang_format_final_layer.
-    mfd_file = lineno::clang_format_final_layer(mfd_file);
+    mfd_file = preproc::clang_format_final_layer(mfd_file);
     // Write the content of memfd to the output file.
     let mut output_file = fs::File::create(&output).expect("Failed to create output file");
     let mut memfd_content = Vec::new();
@@ -70,14 +70,14 @@ fn cwte_generator(input: &str, output: &str) {
 fn scmp_generator(input: &str, output: &str) {
     let input_file = fs::File::open(input).expect("Failed to open input file");
     // Process the input file with prepare layer, and get the memfd file.
-    let mut mfd_file = lineno::clang_format_prepare_layer(input_file);
-    mfd_file = lineno::prepare_layer(mfd_file);
+    let mut mfd_file = preproc::clang_format_prepare_layer(input_file);
+    mfd_file = preproc::prepare_layer(mfd_file);
     // Process the input file with scmp layer, and get the memfd file.
     mfd_file = scmp::scmp_layer(mfd_file, input);
     // Process the memfd file with final layer, and get the new memfd file.
-    mfd_file = lineno::final_layer(mfd_file);
+    mfd_file = preproc::final_layer(mfd_file);
     // Format the output with clang_format_final_layer.
-    mfd_file = lineno::clang_format_final_layer(mfd_file);
+    mfd_file = preproc::clang_format_final_layer(mfd_file);
     // Write the content of memfd to the output file.
     let mut output_file = fs::File::create(&output).expect("Failed to create output file");
     let mut memfd_content = Vec::new();

@@ -1,4 +1,3 @@
-//use colored::*;
 #[cfg(debug_assertions)]
 use crate::debug;
 use rustix::fs::{MemfdFlags, memfd_create};

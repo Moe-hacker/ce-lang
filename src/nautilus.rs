@@ -1,4 +1,3 @@
-//use colored::*;
 #[cfg(debug_assertions)]
 use crate::debug;
 use colored::Colorize;
@@ -18,7 +17,7 @@ fn print_nautilus(file: &str, content: &str, enforce: bool) {
         "Cwte tail at ".yellow(),
         file.to_string().blue(),
         " line ".yellow(),
-        crate::lineno::get_line_no(content)
+        crate::preproc::get_line_no(content)
             .unwrap_or(0)
             .to_string()
             .blue()
@@ -27,7 +26,7 @@ fn print_nautilus(file: &str, content: &str, enforce: bool) {
     println!(
         "{}{}",
         ">>  ".yellow(),
-        crate::lineno::erase_line_no_mark(content).blue()
+        crate::preproc::erase_line_no_mark(content).blue()
     );
     println!("{}", ">>".yellow());
     println!(
