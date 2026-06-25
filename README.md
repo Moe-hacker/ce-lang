@@ -110,12 +110,14 @@ Anyway, trust the c code, not the cwte code and cwte-generator.
 # ::::< The non-goal:
 There's no silver bullet in C programming.    
 Cwte is never a .unwrap() or even ownership analyzer, as C also has never provided a way to do that.    
+If you have 15 same open() with same error handling, cwte is good.    
+If you have just 1 open(), and `ahhh, cute tail, leeme cook`, cwte is not good.    
 If you expect something like:    
 ```c
 foo(bar() :<, buz());
 ```
-Then remove your brain. The only way to implement this is to use gnu extension `({ ... })` or even something like in-place ffi, and this is not a good idea. C spec didn't defined the order of evaluation of bar() and buz(), that's already a hell, and if bar() allocates a resource, will freeing it in :< be conflict with foo()'s logic?     
-And the generated code will be unreadable and un-auditable after that, considering the error-handler is a dangerous side-effect, as an accuountable tail, cwte should never try that.        
+Then remove your brain. The only way to implement this is to use gnu extension `({ ... })` or even something like in-place ffi, and this is not a good idea. C spec didn't defined the order of evaluation of bar() and buz(), that's already a hell, and if bar() allocates a resource, will freeing it in `:<` be conflict with foo()'s logic?     
+And the generated code will be unreadable and un-auditable after that, considering the error handler is a dangerous side-effect, as an accuountable tail, cwte should never try that.        
 And if you expect complex AST parsing, cwte might never do that. The more complex features means the more complex bugs, and you will get many weird bugs if you don't have enough PLT knowledge and a good test coverage.    
 # ::::< Project structure:
 A cwte project should be like:
