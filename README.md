@@ -119,7 +119,7 @@ foo(bar() :<, buz());
 ```
 Then remove your brain. The only way to implement this is to use gnu extension `({ ... })` or even something like in-place ffi, and this is not a good idea. C does not define the order of evaluation of bar() and buz(), that's already a hell, and if bar() allocates a resource, will freeing it in `:<` conflict with foo()'s logic?     
 And the generated code will be unreadable and unauditable after that, considering the error handler is a dangerous side-effect, as an accuountable tail, cwte should never try that.        
-And if you expect complex AST parsing, cwte might never do that. More complex features mean more complex bugs, and you will get many weird bugs if you don't have enough PLT knowledge and a good test coverage.    
+And if you expect complex AST parsing, cwte might not do that. More complex features mean more complex bugs, and you will get many weird bugs if you don't have enough PLT knowledge and a good test coverage.    
 # ::::< Project structure:
 A cwte project should be like:
 ```
