@@ -10,6 +10,7 @@ use std::io::Read;
 use std::io::Seek;
 use std::io::Write;
 use std::os::fd::AsFd;
+// TODO: ce_enforce, ::} and :D marks, and more linter rules in the future.
 pub fn linter_layer(mut input: File, file: &str) -> File {
     /*
      * :D is cwte ignore forever mark.

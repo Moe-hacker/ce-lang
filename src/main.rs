@@ -107,6 +107,11 @@ fn main() {
      * Say thanks to the kernel, say thanks to memfd,
      * and have an ice cream.
      */
+    /*
+     * cwte has two modes, gen and scmp.
+     * gen mode will generate by .hce rules,
+     * and scmp mode will generate by json rules.
+     */
     #[cfg(debug_assertions)]
     debug::setup_panic_hook();
     let args: Vec<String> = env::args().collect();

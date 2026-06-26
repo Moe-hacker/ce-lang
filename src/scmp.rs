@@ -14,6 +14,7 @@ use std::os::fd::AsFd;
 pub fn scmp_layer(mut input: File, file: &str) -> File {
     /*
      * :< mark for seccomp.c in ruri.
+     * Will be a json-driven code rewriter in the future.
      */
     println!(
         "{}{}{}",

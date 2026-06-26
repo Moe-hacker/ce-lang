@@ -12,9 +12,14 @@ use std::process::Command;
 pub fn clang_format_prepare_layer(mut input: File) -> File {
     /*
      * clang-format the input file, and return the output file.
+     * So that we will have everything in a fixed format,
+     * to bypass AST parsing.
      */
     // Dump input to a temporary file clang_format_prepare_layer_PID.cei
-    let temp_file_path = format!("clang_format_prepare_layer_{}.cei", std::process::id());
+    let temp_file_path = format!(
+        "cwtmp_clang_format_prepare_layer_{}.cei",
+        std::process::id()
+    );
     let mut temp_file = fs::File::create(&temp_file_path).expect("Failed to create temporary file");
     input
         .seek(std::io::SeekFrom::Start(0))
@@ -110,7 +115,9 @@ pub fn clang_format_prepare_layer(mut input: File) -> File {
 }
 pub fn prepare_layer(mut input: File) -> File {
     /*
-     * prepare, add ce_line_xx mark to each line.
+     * Prepare, add ce_line_xx mark to each line,
+     * So we can get the line number from the mark later.
+     *
      */
     // Seek to the beginning of the file.
     input
@@ -149,9 +156,10 @@ pub fn prepare_layer(mut input: File) -> File {
 pub fn clang_format_final_layer(mut input: File) -> File {
     /*
      * clang-format the input file, and return the output file.
+     * So that users don't need to format again.
      */
     // Dump input to a temporary file clang_format_final_layer_PID.cei
-    let temp_file_path = format!("clang_format_final_layer_{}.cei", std::process::id());
+    let temp_file_path = format!("cwtmp_clang_format_final_layer_{}.cei", std::process::id());
     let mut temp_file = fs::File::create(&temp_file_path).expect("Failed to create temporary file");
     input
         .seek(std::io::SeekFrom::Start(0))
@@ -209,6 +217,7 @@ pub fn clang_format_final_layer(mut input: File) -> File {
 pub fn final_layer(mut input: File) -> File {
     /*
      * Finally, remove @ce_line_xx@ mark.
+     * Just a simple eraser.
      */
     // Seek to the beginning of the file.
     input

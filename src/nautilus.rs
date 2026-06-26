@@ -11,6 +11,7 @@ use std::io::Write;
 use std::os::fd::AsFd;
 // Print a nautilus with file name, line number and content.
 // The `::}` is a cwte TODO note.
+// TODO: Don't panic here.
 fn print_nautilus(file: &str, content: &str, enforce: bool) {
     println!(
         "\n{}{}{}{}:",
@@ -46,6 +47,7 @@ fn print_nautilus(file: &str, content: &str, enforce: bool) {
 pub fn nautilus_layer(mut input: File, file: &str) -> File {
     /*
      * Nautilus mark ::} is cwte TODO mark.
+     * We will just erase it, and print a nautilus for it.
      */
     // Seek to the beginning of the file.
     input
