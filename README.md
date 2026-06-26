@@ -218,7 +218,7 @@ In security model:
 - Gray-box testing: we will assume every layer is a gray box, so we can just check the input and output of each layer.    
 
 Rust users unhappy, fp users unhappy, linux users unhappy, but me happy, so leeme cook, with the 1980s style.      
-~~(It's memefd in fact, just because I didn't learn rust's immutable data type and debug hooks well). ~~   
+~~It's memefd in fact, just because I didn't learn rust's immutable data type and debug hooks well~~    
 
 # cwte design goals:
 Warning: draft only, never assume anything, and never trust the tail.    
