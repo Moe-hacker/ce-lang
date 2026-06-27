@@ -241,22 +241,9 @@ pub fn final_layer(mut input: File) -> File {
     )
     .expect("Failed to create memfd");
     let mut mfd_file = fs::File::from(fd);
-    // Now, erase the `::}` in content, and print the nautilus for it.
+    // Now, erase the `@ce_line_xx@` in content.
     for line in content.lines() {
-        // The line_no is now untrustable.
-        // So we just match first @ and second @, and erase it.
-        if let Some(start) = line.find('@') {
-            // Check if the first character is @, if not, this line is unmarked, just write it to the output file.
-            if line[start..].starts_with('@') {
-                if let Some(end) = line[start + 1..].find('@') {
-                    let fixed = format!("{}{}", &line[..start], &line[start + end + 2..]);
-                    writeln!(mfd_file, "{}", fixed).expect("Failed to write to file");
-                    continue;
-                }
-            }
-        }
-        // Or, write the line to the output file.
-        writeln!(mfd_file, "{}", line).expect("Failed to write to file");
+        writeln!(mfd_file, "{}", erase_line_no_mark(line)).expect("Failed to write to file");
     }
     // Make the memfd immutable to prevent further modification.
     mfd_file.sync_all().expect("Failed to sync memfd");
