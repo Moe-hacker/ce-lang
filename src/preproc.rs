@@ -17,90 +17,65 @@ pub fn clang_format_prepare_layer(mut input: File) -> File {
      * to bypass AST parsing.
      *
      */
-    // Dump input to a temporary file clang_format_prepare_layer_PID.cei
-    let temp_file_path = format!(
-        "cwtmp_clang_format_prepare_layer_{}.cei",
-        std::process::id()
-    );
-    let mut temp_file = fs::File::create(&temp_file_path).expect("Failed to create temporary file");
+    // Read input to string.
     input
         .seek(std::io::SeekFrom::Start(0))
         .expect("Failed to seek input file");
-    let mut content = Vec::new();
+    let mut content = String::new();
     input
-        .read_to_end(&mut content)
+        .read_to_string(&mut content)
         .expect("Failed to read input file");
-    temp_file
-        .write_all(&content)
-        .expect("Failed to write to temporary file");
-    // Run the following command:
-    // sed -i "s/:</_CE_SAD/g" clang_format_prepare_layer.cei
-    // sed -i "s/:>/_CE_HAP/g" clang_format_prepare_layer.cei
-    // sed -i "s/:o/_CE_LWE/g" clang_format_prepare_layer.cei
-    // sed -i "s/::}/_CE_NUS/g" clang_format_prepare_layer.cei
-    // sed -i "s/:D/_CE_LAF/g" clang_format_prepare_layer.cei
-    // sed -i "s/:3/_CE_DFM/g" clang_format_prepare_layer.cei
-    // clang-format -i --assume-filename=test.c clang_format_prepare_layer.cei
-    Command::new("sed")
-        .arg("-i")
-        .arg("s/:</_CE_SAD/g")
-        .arg(&temp_file_path)
-        .status()
-        .expect("Failed to run sed command");
-    Command::new("sed")
-        .arg("-i")
-        .arg("s/:>/_CE_HAP/g")
-        .arg(&temp_file_path)
-        .status()
-        .expect("Failed to run sed command");
-    Command::new("sed")
-        .arg("-i")
-        .arg("s/:o/_CE_LWE/g")
-        .arg(&temp_file_path)
-        .status()
-        .expect("Failed to run sed command");
-    Command::new("sed")
-        .arg("-i")
-        .arg("s/::}/_CE_NUS/g")
-        .arg(&temp_file_path)
-        .status()
-        .expect("Failed to run sed command");
-    Command::new("sed")
-        .arg("-i")
-        .arg("s/:D/_CE_LAF/g")
-        .arg(&temp_file_path)
-        .status()
-        .expect("Failed to run sed command");
-    Command::new("sed")
-        .arg("-i")
-        .arg("s/:3/_CE_DFM/g")
-        .arg(&temp_file_path)
-        .status()
-        .expect("Failed to run sed command");
-    Command::new("clang-format")
-        .arg("-i")
+    // Replace:
+    // :<  _CE_SAD :sad path when error
+    // :>  _CE_HAP :happy path when no error
+    // :o  _CE_LWE :log when error
+    // ::} _CE_NUS :just a todo mark
+    // :D  _CE_LAF :ignore error handler forever
+    // :3  _CE_DFM :do that for me, an AI-native mark
+    content = content.replace(":<", "_CE_SAD");
+    content = content.replace(":>", "_CE_HAP");
+    content = content.replace(":o", "_CE_LWE");
+    content = content.replace("::}", "_CE_NUS");
+    content = content.replace(":D", "_CE_LAF");
+    content = content.replace(":3", "_CE_DFM");
+    // Call clang-format --assume-filename=test.c
+    // Write content to clang-format's stdin,
+    // and read the output from clang-format's stdout.
+    let mut clang_format_child = Command::new("clang-format")
         .arg("--assume-filename=test.c")
-        .arg(&temp_file_path)
-        .status()
-        .expect("Failed to run clang-format command");
-    // Seek to the beginning of the temporary file.
-    temp_file
-        .seek(std::io::SeekFrom::Start(0))
-        .expect("Failed to seek temporary file");
-    // Read the formatted content from the temporary file to a memfd file.
+        .stdin(std::process::Stdio::piped())
+        .stdout(std::process::Stdio::piped())
+        .spawn()
+        .expect("Failed to spawn clang-format");
+    {
+        let mut stdin = clang_format_child
+            .stdin
+            .take()
+            .expect("Failed to open stdin");
+        stdin
+            .write_all(content.as_bytes())
+            .expect("Failed to write to stdin");
+    }
+    let output = clang_format_child
+        .wait_with_output()
+        .expect("Failed to read stdout");
+    if !output.status.success() {
+        eprintln!(
+            "{}",
+            "Error: clang-format failed. Please make sure clang-format is installed and in your PATH.".red()
+        );
+        std::process::exit(1);
+    }
+    let formatted_content = String::from_utf8(output.stdout).expect("Invalid UTF-8 output");
+    // Create a memfd file, and write the formatted content to it.
     let fd = memfd_create(
         "cwte_output",
         MemfdFlags::CLOEXEC | MemfdFlags::ALLOW_SEALING,
     )
     .expect("Failed to create memfd");
     let mut mfd_file = fs::File::from(fd);
-    let mut formatted_content = Vec::new();
-    let mut temp_file = fs::File::open(&temp_file_path).expect("Failed to open temporary file");
-    temp_file
-        .read_to_end(&mut formatted_content)
-        .expect("Failed to read temporary file");
     mfd_file
-        .write_all(&formatted_content)
+        .write_all(formatted_content.as_bytes())
         .expect("Failed to write to memfd");
     // Make the memfd immutable to prevent further modification.
     mfd_file.sync_all().expect("Failed to sync memfd");
@@ -111,9 +86,6 @@ pub fn clang_format_prepare_layer(mut input: File) -> File {
         mfd_file.try_clone().expect("Failed to clone memfd"),
         "clang_format_prepare_layer.cei",
     );
-    // For release, remove the temporary file.
-    #[cfg(not(debug_assertions))]
-    fs::remove_file(&temp_file_path).expect("Failed to remove temporary file");
     // Return the memfd file for further processing.
     mfd_file
 }
@@ -175,53 +147,65 @@ pub fn clang_format_final_layer(mut input: File) -> File {
         || content.contains("_CE_LWE")
         || content.contains("_CE_NUS")
         || content.contains("_CE_LAF")
-        || content.contains("_CE_DFM")
     {
         eprintln!("\n{}",
-            "Warning: The output file contains _CE_SAD, _CE_HAP, _CE_LWE, _CE_NUS, _CE_LAF, or _CE_DFM marks.
+            "Warning: The output file contains _CE_SAD (:<), _CE_HAP (:>), _CE_LWE (:o), _CE_NUS (::}), or _CE_LAF (:D) marks.
 These marks are used for internal processing and should not appear in the final output.
 Please check If cwte is working correctly, or just fire cwte.".red()
         );
     }
-    // Dump input to a temporary file clang_format_final_layer_PID.cei
-    let temp_file_path = format!("cwtmp_clang_format_final_layer_{}.cei", std::process::id());
-    let mut temp_file = fs::File::create(&temp_file_path).expect("Failed to create temporary file");
-    input
-        .seek(std::io::SeekFrom::Start(0))
-        .expect("Failed to seek input file");
-    let mut content = Vec::new();
-    input
-        .read_to_end(&mut content)
-        .expect("Failed to read input file");
-    temp_file
-        .write_all(&content)
-        .expect("Failed to write to temporary file");
-    // Run the following command:
-    // clang-format -i --assume-filename=test.c clang_format_final_layer.cei
-    Command::new("clang-format")
-        .arg("-i")
+    if content.contains("_CE_DFM") {
+        eprintln!(
+            "\n{}",
+            "Warning: The output file contains _CE_DFM (:3) mark. Call your LLM to do that for you."
+                .red()
+        );
+    }
+    // Call clang-format --assume-filename=test.c
+    // Write content to clang-format's stdin,
+    // and read the output from clang-format's stdout.
+    let mut clang_format_child = Command::new("clang-format")
         .arg("--assume-filename=test.c")
-        .arg(&temp_file_path)
-        .status()
-        .expect("Failed to run clang-format command");
-    // Seek to the beginning of the temporary file.
-    temp_file
-        .seek(std::io::SeekFrom::Start(0))
-        .expect("Failed to seek temporary file");
-    // Read the formatted content from the temporary file to a memfd file.
+        .stdin(std::process::Stdio::piped())
+        .stdout(std::process::Stdio::piped())
+        .spawn()
+        .expect("Failed to spawn clang-format");
+    {
+        let mut stdin = clang_format_child
+            .stdin
+            .take()
+            .expect("Failed to open stdin");
+        stdin
+            .write_all(content.as_bytes())
+            .expect("Failed to write to stdin");
+    }
+    let output = clang_format_child
+        .wait_with_output()
+        .expect("Failed to read stdout");
+    if !output.status.success() {
+        eprintln!(
+            "{}",
+            "Error: clang-format failed. Please make sure clang-format is installed and in your PATH.".red()
+        );
+        std::process::exit(1);
+    }
+    let mut formatted_content = String::from_utf8(output.stdout).expect("Invalid UTF-8 output");
+    // Replace internal marks with cwte symbols for final output.
+    formatted_content = formatted_content.replace("_CE_SAD", ":<");
+    formatted_content = formatted_content.replace("_CE_HAP", ":>");
+    formatted_content = formatted_content.replace("_CE_LWE", ":o");
+    formatted_content = formatted_content.replace("_CE_NUS", "::}");
+    formatted_content = formatted_content.replace("_CE_LAF", ":D");
+    formatted_content = formatted_content.replace("_CE_DFM", ":3");
+    // Create a memfd file, and write the formatted content to it.
     let fd = memfd_create(
         "cwte_output",
         MemfdFlags::CLOEXEC | MemfdFlags::ALLOW_SEALING,
     )
     .expect("Failed to create memfd");
     let mut mfd_file = fs::File::from(fd);
-    let mut formatted_content = Vec::new();
-    let mut temp_file = fs::File::open(&temp_file_path).expect("Failed to open temporary file");
-    temp_file
-        .read_to_end(&mut formatted_content)
-        .expect("Failed to read temporary file");
     mfd_file
-        .write_all(&formatted_content)
+        .write_all(formatted_content.as_bytes())
         .expect("Failed to write to memfd");
     // Make the memfd immutable to prevent further modification.
     mfd_file.sync_all().expect("Failed to sync memfd");
@@ -232,9 +216,6 @@ Please check If cwte is working correctly, or just fire cwte.".red()
         mfd_file.try_clone().expect("Failed to clone memfd"),
         "clang_format_final_layer.cei",
     );
-    // For release, remove the temporary file.
-    #[cfg(not(debug_assertions))]
-    fs::remove_file(&temp_file_path).expect("Failed to remove temporary file");
     // Return the memfd file for further processing.
     mfd_file
 }
