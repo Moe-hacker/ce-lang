@@ -14,6 +14,7 @@ use std::os::fd::AsFd;
 pub fn scmp_layer(mut input: File, file: &str) -> File {
     /*
      * :< mark for seccomp.c in ruri.
+     * It's _CE_SAD now.
      * Will be a json-driven code rewriter in the future.
      */
     println!(
@@ -38,12 +39,11 @@ pub fn scmp_layer(mut input: File, file: &str) -> File {
     )
     .expect("Failed to create memfd");
     let mut mfd_file = fs::File::from(fd);
-    // Now, erase the `::}` in content, and print the nautilus for it.
+    // Now, erase the `_CE_SAD` in content, and print the nautilus for it.
     for line in content.lines() {
-        // If the line contains `::}`, print the nautilus and skip this line.
-        if line.contains(":<") {
-            // Replace ::} with empty string, and write the line to the output file.
-            let fixed = line.replace(":<", "");
+        // If the line contains `_CE_SAD`, print the nautilus and skip this line.
+        if line.contains("_CE_SAD") {
+            let fixed = line.replace("_CE_SAD", "");
             writeln!(mfd_file, "res={}", preproc::erase_line_no_mark(&fixed))
                 .expect("Failed to write to file");
             writeln!(

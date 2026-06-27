@@ -1,5 +1,6 @@
 #[cfg(debug_assertions)]
 use crate::debug;
+use colored::Colorize;
 use rustix::fs::{MemfdFlags, memfd_create};
 use rustix::fs::{SealFlags, fcntl_add_seals};
 use std::fs;
@@ -82,43 +83,6 @@ pub fn clang_format_prepare_layer(mut input: File) -> File {
         .arg(&temp_file_path)
         .status()
         .expect("Failed to run clang-format command");
-    // Then sed back the _CE_SAD, _CE_NUS, _CE_LAF to :<, ::}, :D
-    Command::new("sed")
-        .arg("-i")
-        .arg("s/_CE_SAD/:</g")
-        .arg(&temp_file_path)
-        .status()
-        .expect("Failed to run sed command");
-    Command::new("sed")
-        .arg("-i")
-        .arg("s/_CE_HAP/:>/g")
-        .arg(&temp_file_path)
-        .status()
-        .expect("Failed to run sed command");
-    Command::new("sed")
-        .arg("-i")
-        .arg("s/_CE_LWE/:o/g")
-        .arg(&temp_file_path)
-        .status()
-        .expect("Failed to run sed command");
-    Command::new("sed")
-        .arg("-i")
-        .arg("s/_CE_NUS/::}/g")
-        .arg(&temp_file_path)
-        .status()
-        .expect("Failed to run sed command");
-    Command::new("sed")
-        .arg("-i")
-        .arg("s/_CE_LAF/:D/g")
-        .arg(&temp_file_path)
-        .status()
-        .expect("Failed to run sed command");
-    Command::new("sed")
-        .arg("-i")
-        .arg("s/_CE_DFM/:3/g")
-        .arg(&temp_file_path)
-        .status()
-        .expect("Failed to run sed command");
     // Seek to the beginning of the temporary file.
     temp_file
         .seek(std::io::SeekFrom::Start(0))
@@ -198,6 +162,27 @@ pub fn clang_format_final_layer(mut input: File) -> File {
      * clang-format the input file, and return the output file.
      * So that users don't need to format again.
      */
+    // Lint the input file, if has _CE_SAD, _CE_HAP, _CE_LWE, _CE_NUS, _CE_LAF, _CE_DFM, then warning.
+    input
+        .seek(std::io::SeekFrom::Start(0))
+        .expect("Failed to seek input file");
+    let mut content = String::new();
+    input
+        .read_to_string(&mut content)
+        .expect("Failed to read input file");
+    if content.contains("_CE_SAD")
+        || content.contains("_CE_HAP")
+        || content.contains("_CE_LWE")
+        || content.contains("_CE_NUS")
+        || content.contains("_CE_LAF")
+        || content.contains("_CE_DFM")
+    {
+        eprintln!("\n{}",
+            "Warning: The output file contains _CE_SAD, _CE_HAP, _CE_LWE, _CE_NUS, _CE_LAF, or _CE_DFM marks.
+These marks are used for internal processing and should not appear in the final output.
+Please check If cwte is working correctly, or just fire cwte.".red()
+        );
+    }
     // Dump input to a temporary file clang_format_final_layer_PID.cei
     let temp_file_path = format!("cwtmp_clang_format_final_layer_{}.cei", std::process::id());
     let mut temp_file = fs::File::create(&temp_file_path).expect("Failed to create temporary file");

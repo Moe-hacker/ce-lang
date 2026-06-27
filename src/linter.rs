@@ -14,6 +14,7 @@ use std::os::fd::AsFd;
 pub fn linter_layer(mut input: File, file: &str) -> File {
     /*
      * :D is cwte ignore forever mark.
+     * It's _CE_LAF now.
      * This will bypass #[[ce_enforce(func)]] in the future.
      *
      */
@@ -33,12 +34,12 @@ pub fn linter_layer(mut input: File, file: &str) -> File {
     )
     .expect("Failed to create memfd");
     let mut mfd_file = fs::File::from(fd);
-    // Now, erase the `:D` in content, and print the nautilus for it.
+    // Now, erase the `_CE_LAF` in content, and print the nautilus for it.
     for line in content.lines() {
-        // If the line contains `:D`, print the nautilus and skip this line.
-        if line.contains(":D") {
+        // If the line contains `_CE_LAF`, print the nautilus and skip this line.
+        if line.contains("_CE_LAF") {
             // !FIXME
-            // print we got :D at line i, and the content of this line.
+            // print we got _CE_LAF at line i, and the content of this line.
             println!(
                 "\n{}{}{}{}:",
                 "Cwte linter at ".yellow(),
@@ -50,14 +51,16 @@ pub fn linter_layer(mut input: File, file: &str) -> File {
             println!(
                 "{}{}",
                 ">>  ".yellow(),
-                preproc::erase_line_no_mark(line).blue()
+                preproc::erase_line_no_mark(line)
+                    .replace("_CE_LAF", ":D")
+                    .blue()
             );
             println!("{}", ">>".yellow());
             println!("{}", ":D you choose to ignore this.".yellow());
             //
             //
-            // Replace :D with empty string, and write the line to the output file.
-            let fixed = line.replace(":D", "");
+            // Replace _CE_LAF with empty string, and write the line to the output file.
+            let fixed = line.replace("_CE_LAF", "");
             writeln!(mfd_file, "{}", fixed).expect("Failed to write to file");
             continue;
         }

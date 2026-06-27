@@ -11,8 +11,7 @@ use std::io::Write;
 use std::os::fd::AsFd;
 // Print a nautilus with file name, line number and content.
 // The `::}` is a cwte TODO note.
-// TODO: Don't panic here.
-fn print_nautilus(file: &str, content: &str, enforce: bool) {
+fn print_nautilus(file: &str, content: &str) {
     println!(
         "\n{}{}{}{}:",
         "Cwte tail at ".yellow(),
@@ -27,7 +26,9 @@ fn print_nautilus(file: &str, content: &str, enforce: bool) {
     println!(
         "{}{}",
         ">>  ".yellow(),
-        crate::preproc::erase_line_no_mark(content).blue()
+        crate::preproc::erase_line_no_mark(content)
+            .replace("_CE_NUS", "::}")
+            .blue()
     );
     println!("{}", ">>".yellow());
     println!(
@@ -35,18 +36,12 @@ fn print_nautilus(file: &str, content: &str, enforce: bool) {
         "::} Here's a nautilus, have an ice cream and write a fix,".yellow()
     );
     println!("{}", "    and don't leave it to be a fossil QwQ\n".yellow());
-    if enforce {
-        // If enforce is true, panic to prevent compiling.
-        // Cooked by rust at the beginning, now I cry.
-        // `}` should be `}}` in rust fmt.
-        // I miss my cprintf now.
-        panic!("Cwte ::}} tail is enforced, you must fix this before compiling.");
-    }
 }
 
 pub fn nautilus_layer(mut input: File, file: &str) -> File {
     /*
      * Nautilus mark ::} is cwte TODO mark.
+     * It's _CE_NUS now.
      * We will just erase it, and print a nautilus for it.
      */
     // Seek to the beginning of the file.
@@ -65,13 +60,13 @@ pub fn nautilus_layer(mut input: File, file: &str) -> File {
     )
     .expect("Failed to create memfd");
     let mut mfd_file = fs::File::from(fd);
-    // Now, erase the `::}` in content, and print the nautilus for it.
+    // Now, erase the `_CE_NUS` in content, and print the nautilus for it.
     for line in content.lines() {
-        // If the line contains `::}`, print the nautilus and skip this line.
-        if line.contains("::}") {
-            print_nautilus(file, line, false);
-            // Replace ::} with empty string, and write the line to the output file.
-            let fixed = line.replace("::}", "");
+        // If the line contains `_CE_NUS`, print the nautilus and skip this line.
+        if line.contains("_CE_NUS") {
+            print_nautilus(file, line);
+            // Replace _CE_NUS with empty string, and write the line to the output file.
+            let fixed = line.replace("_CE_NUS", "");
             writeln!(mfd_file, "{}", fixed).expect("Failed to write to file");
             continue;
         }
