@@ -58,7 +58,7 @@ fn cwte_generator(input: &str, output: &str) {
         .expect("Failed to write to output file");
     println!(
         "{}{}",
-        "\nCwte processing completed. Output written to ".green(),
+        "\nCwte processing completed, output written to ".green(),
         output.blue()
     );
     println!(
@@ -92,7 +92,7 @@ fn scmp_generator(input: &str, output: &str) {
         .expect("Failed to write to output file");
     println!(
         "{}{}",
-        "\nCwte processing completed. Output written to ".green(),
+        "\nCwte processing completed, output written to ".green(),
         output.blue()
     );
     println!(

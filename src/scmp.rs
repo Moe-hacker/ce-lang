@@ -1,7 +1,7 @@
 #[cfg(debug_assertions)]
 use crate::debug;
 use crate::preproc;
-use colored::Colorize;
+//use colored::Colorize;
 use rustix::fs::{MemfdFlags, memfd_create};
 use rustix::fs::{SealFlags, fcntl_add_seals};
 use std::fs;
@@ -11,18 +11,12 @@ use std::io::Seek;
 use std::io::Write;
 use std::os::fd::AsFd;
 
-pub fn scmp_layer(mut input: File, file: &str) -> File {
+pub fn scmp_layer(mut input: File, _file: &str) -> File {
     /*
      * :< mark for seccomp.c in ruri.
      * It's _CE_SAD now.
      * Will be a json-driven code rewriter in the future.
      */
-    println!(
-        "{}{}{}",
-        "\nProcessing ".green(),
-        file.blue(),
-        " with scmp layer... >w<".yellow()
-    );
     // Seek to the beginning of the file.
     input
         .seek(std::io::SeekFrom::Start(0))
