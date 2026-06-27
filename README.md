@@ -227,7 +227,7 @@ Warning: draft only, never assume anything, and never trust the tail.
 Warning: just some ideas, we will only focuse on `:<` now.   
 Symbols:     
 ```
-:<  _CE_SAD :panic when error
+:<  _CE_SAD :sad path when error
 :>  _CE_HAP :happy path when no error
 :o  _CE_LWE :log when error
 ::} _CE_NUS :just a todo mark

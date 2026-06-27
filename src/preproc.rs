@@ -14,7 +14,7 @@ pub fn clang_format_prepare_layer(mut input: File) -> File {
      * clang-format the input file, and return the output file.
      * So that we will have everything in a fixed format,
      * to bypass AST parsing.
-     * _CE_SAD :panic when error
+     * _CE_SAD :sad path when error
      * _CE_HAP :happy path when no error
      * _CE_LWE :log when error
      * _CE_NUS :just a todo mark
