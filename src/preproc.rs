@@ -314,33 +314,30 @@ pub fn final_layer(mut input: File) -> File {
 pub fn get_line_no(line: &str) -> Result<usize, &'static str> {
     /*
      * Get the line number from @ce_line_xx@ mark, and return it.
+     * This mark is only at start of the line, @ should be the first character of the line.
+     * Or if we cannot parse the line number, just return an error.
      */
-    // Parse @ce_line_xx@ mark, and return the line number.
-    if let Some(start) = line.find('@') {
-        if line[start..].starts_with('@') {
-            if let Some(end) = line[start + 1..].find('@') {
-                let line_no_str = &line[start + 1..start + end + 1];
-                if line_no_str.starts_with("ce_line_") {
-                    let line_no = line_no_str[8..].parse::<usize>();
-                    if let Ok(no) = line_no {
-                        return Ok(no);
-                    }
-                }
-            }
-        }
-    }
-    Err("Invalid line number mark")
+    let Some(rest) = line.strip_prefix("@ce_line_") else {
+        return Err("missing line mark");
+    };
+
+    let Some(end) = rest.find('@') else {
+        return Err("invalid line mark");
+    };
+
+    rest[..end]
+        .parse::<usize>()
+        .map_err(|_| "invalid line number")
 }
 pub fn erase_line_no_mark(line: &str) -> String {
     /*
      * Erase the @ce_line_xx@ mark in the line, and return the fixed line.
+     * This mark is only at start of the line, @ should be the first character of the line.
+     * Or if we cannot find the mark, just return the original line.
      */
-    if let Some(start) = line.find('@') {
-        if line[start..].starts_with('@') {
-            if let Some(end) = line[start + 1..].find('@') {
-                let fixed = format!("{}{}", &line[..start], &line[start + end + 2..]);
-                return fixed;
-            }
+    if let Some(rest) = line.strip_prefix("@ce_line_") {
+        if let Some((_, fixed)) = rest.split_once('@') {
+            return fixed.to_string();
         }
     }
     line.to_string()
