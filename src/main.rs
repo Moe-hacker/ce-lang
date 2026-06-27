@@ -10,7 +10,6 @@ mod preproc;
 mod scmp;
 use clap::{Parser, Subcommand};
 use colored::*;
-use std::env;
 use std::fs;
 use std::io::Read;
 use std::io::Seek;
@@ -19,7 +18,7 @@ use std::io::Write;
 #[derive(Parser)]
 #[command(name = "cwte")]
 #[command(version = "0.1.0")]
-#[command(about = "Cwte")]
+#[command(about = "cwte")]
 struct Cli {
     #[command(subcommand)]
     command: Commands,
@@ -29,6 +28,7 @@ struct Cli {
 enum Commands {
     Gen { input: String, output: String },
     Scmp { input: String, output: String },
+    Version {},
 }
 
 fn cwte_generator(input: &str, output: &str) {
@@ -114,12 +114,6 @@ fn main() {
      */
     #[cfg(debug_assertions)]
     debug::setup_panic_hook();
-    let args: Vec<String> = env::args().collect();
-    if args.len() < 4 {
-        println!("Usage: {} [gen|scmp] <file> <output>", args[0]);
-        return;
-    };
-
     let cli = Cli::parse();
     match cli.command {
         Commands::Gen { input, output } => {
@@ -127,6 +121,48 @@ fn main() {
         }
         Commands::Scmp { input, output } => {
             scmp_generator(&input, &output);
+        }
+        Commands::Version {} => {
+            println!("{}", "\nCwte version 0.1.0\n".green());
+            println!(
+                "{}",
+                "C With Tailed Error handler/Cute Way To handle Error".green()
+            );
+            println!("{}", "But not `C Way To Evolve` :<\n".green());
+            println!("{}", "         _-''''-._".blue());
+            println!("{}", "       /`         `.".blue());
+            println!("{}", "      /   .,~~~,.   \\".blue());
+            println!("{}", "     |   /       \\   |".blue());
+            println!("{}", "     |  :    :>.,/   |".blue());
+            println!("{}", "     \\   \\       ,___/:<".blue());
+            println!("{}", "      \".  \"-----\"   /::::<".blue());
+            println!("{}", "       `.          /::::::<".blue());
+            println!("{}", "         '-.____../:::::::::<\n".blue());
+            println!(
+                "{}",
+                "\"Abstraction turns reality into a black box.\"".blue()
+            );
+            println!(
+                "{}",
+                "\"When the black box springs a leak, out comes Cthulhu.\"\n".blue()
+            );
+            println!(
+                "{}",
+                "We trust you have received the usual lecture from cwte project.".green()
+            );
+            println!(
+                "{}",
+                "It usually boils down to these three things:\n".green()
+            );
+            println!("{}", " #1) The tail should never wag the cat.".yellow());
+            println!(
+                "{}",
+                " #2) Your cat's tail can also make you copy-fail.".yellow()
+            );
+            println!(
+                "{}",
+                " #3) Everything will become a fossil, nothing's absolutely evolved.\n".yellow()
+            );
         }
     }
 }

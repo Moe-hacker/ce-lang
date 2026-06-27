@@ -15,14 +15,14 @@ And, the real cwte will just be a dev-stage-only code generator for ruri. Maybe 
 # ::::< Ascii logo:
 ```
          _-''''-._
-       /`          `.
-      /   .,~~~,     \
-     |   /       \    |
-     |   |   :>.,/    |
-     \   \       ,___/::<
-     `.   "-----"   /:::::<
-       `.          /:::::::<
-         '-.____. /::::::::::<
+       /`         `.
+      /   .,~~~,.   \
+     |   /       \   |
+     |  :    :>.,/   |
+     \   \       ,___/:<
+      ".  "-----"   /::::<
+       `.          /::::::<
+         '-.____../:::::::::<
 
 "Abstraction turns reality into a black box."
 "When the black box springs a leak, out comes Cthulhu."
